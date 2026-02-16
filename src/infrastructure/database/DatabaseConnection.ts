@@ -1,0 +1,89 @@
+import { PrismaClient, Prisma } from "generated/prisma/client.js";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { injectable, inject } from "tsyringe";
+import { Logger } from "../logging/Logger.js";
+import { ENV } from "@config/env.js";
+import { DI_TOKENS } from "@config/di-tokens.js";
+
+@injectable()
+export class DatabaseConnection {
+    private static instance: PrismaClient;
+    private prisma: PrismaClient;
+
+    constructor(
+        @inject(DI_TOKENS.Logger) private readonly logger: Logger
+    ) {
+        this.prisma = DatabaseConnection.getInstance(logger);
+    }
+
+    private static getInstance(logger: Logger): PrismaClient {
+        if (!DatabaseConnection.instance) {
+            logger.info("Initializing Prisma Client");
+
+            const adapter = new PrismaPg({
+                connectionString: ENV.DATABASE_URL,
+            })
+
+            DatabaseConnection.instance = new PrismaClient({
+                adapter,
+                log: [
+                    { level: "query", emit: "event" },
+                    { level: "error", emit: "event" },
+                    { level: "warn", emit: "event" },
+                ],
+            });
+
+            DatabaseConnection.instance.$on("query" as never, (e: Prisma.QueryEvent) => {
+                logger.debug("Database Query", {
+                    query: e.query,
+                    params: e.params,
+                    duration: `${e.duration}ms`,
+                });
+            });
+
+            DatabaseConnection.instance.$on("error" as never, (e: Prisma.LogEvent) => {
+                logger.error("Database Error", e);
+            });
+
+            DatabaseConnection.instance.$on("warn" as never, (e: Prisma.LogEvent) => {
+                logger.warn("Database Warning", e);
+            });
+        }
+
+        return DatabaseConnection.instance;
+    }
+
+    getClient(): PrismaClient {
+        return this.prisma;
+    }
+
+    async connect(): Promise<void> {
+        try {
+            await this.prisma.$connect();
+            this.logger.info("Database connected successfully");
+        } catch (error) {
+            this.logger.error("Failed to connect to database", error);
+            throw error;
+        }
+    }
+
+    async disconnect(): Promise<void> {
+        try {
+            await this.prisma.$disconnect();
+            this.logger.info("Database disconnected");
+        } catch (error) {
+            this.logger.error("Error disconnecting from database", error);
+            throw error;
+        }
+    }
+
+    async healthCheck(): Promise<boolean> {
+        try {
+            await this.prisma.$queryRaw`SELECT 1`;
+            return true;
+        } catch (error) {
+            this.logger.error("Database health check failed", error);
+            return false;
+        }
+    }
+}
