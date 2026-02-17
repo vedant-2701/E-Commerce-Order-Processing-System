@@ -1,4 +1,3 @@
-// infrastructure/database/repositories/CartRepository.ts
 import { injectable, inject } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import { Cart } from '../../../domain/entities/Cart.js';

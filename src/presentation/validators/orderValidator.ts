@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { PaymentMethod } from '../../domain/enums/PaymentMethod.js';
-import { error } from 'node:console';
 
 const orderItemSchema = z.object({
     productId: z

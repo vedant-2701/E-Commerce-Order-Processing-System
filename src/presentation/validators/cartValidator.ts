@@ -1,4 +1,3 @@
-// presentation/validators/cartValidator.ts
 import { z } from 'zod';
 
 export const addToCartSchema = z.object({
