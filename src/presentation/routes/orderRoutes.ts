@@ -2,19 +2,19 @@ import { Router } from "express";
 import { container } from "tsyringe";
 import { OrderController } from "../controllers/OrderController.js";
 import { asyncHandler } from "../middlewares/AsyncHandler.js";
-import { ValidationMiddleware } from "@presentation/middlewares/ValidationMiddleware.js";
 
-const router = Router();
-const orderController = container.resolve(OrderController);
+export const orderRoutes = Router();
 
-router.post(
-    "/",
-    ValidationMiddleware.validatePlaceOrder,
-    asyncHandler(orderController.placeOrder),
-);
+let orderController: OrderController;
 
-router.get("/history/:userId", asyncHandler(orderController.getOrderHistory));
+// Lazy getter - resolves only once when first accessed
+const getController = () => {
+    if (!orderController) {
+        orderController = container.resolve(OrderController);
+    }
+    return orderController;
+};
 
-router.get("/:orderId", asyncHandler(orderController.getOrderById));
-
-export { router as orderRoutes };
+orderRoutes.post("/", asyncHandler((req, res) => getController().placeOrder(req, res)));
+orderRoutes.get("/history/:userId", asyncHandler((req, res) => getController().getOrderHistory(req, res)));
+orderRoutes.get("/:id", asyncHandler((req, res) => getController().getOrderById(req, res)));

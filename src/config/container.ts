@@ -38,15 +38,15 @@ import { GetProductsUseCase } from "../application/use-cases/product/GetProducts
 import { GetProductByIdUseCase } from "../application/use-cases/product/GetProductByIdUseCase.js";
 
 // Use Cases - Category
-import { CreateCategoryUseCase } from "@application/use-cases/category/CreateCategoryUseCase.js";
-import { GetCategoriesUseCase } from "@application/use-cases/category/GetCategoriesUseCase.js";
-import { GetCategoryByIdUseCase } from "@application/use-cases/category/GetCategoryByIdUseCase.js";
+import { CreateCategoryUseCase } from "../application/use-cases/category/CreateCategoryUseCase.js";
+import { GetCategoriesUseCase } from "../application/use-cases/category/GetCategoriesUseCase.js";
+import { GetCategoryByIdUseCase } from "../application/use-cases/category/GetCategoryByIdUseCase.js";
 
 // Controllers
 import { OrderController } from "../presentation/controllers/OrderController.js";
 import { CartController } from "../presentation/controllers/CartController.js";
 import { ProductController } from "../presentation/controllers/ProductController.js";
-import { CategoryController } from "@presentation/controllers/CategoryController.js";
+import { CategoryController } from "../presentation/controllers/CategoryController.js";
 
 // Middleware
 import { ErrorHandler } from "../presentation/middlewares/ErrorHandler.js";
@@ -92,7 +92,7 @@ export function setupDependencyInjection(): void {
     // Categories Use Cases
     container.registerSingleton<CreateCategoryUseCase>(CreateCategoryUseCase);
     container.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase);
-    container .registerSingleton<GetCategoryByIdUseCase>(GetCategoryByIdUseCase);
+    container.registerSingleton<GetCategoryByIdUseCase>(GetCategoryByIdUseCase);
 
     // Controllers - Singletons
     container.registerSingleton<OrderController>(OrderController);

@@ -4,12 +4,21 @@ import { ProductController } from "../controllers/ProductController.js";
 import { asyncHandler } from "../middlewares/AsyncHandler.js";
 
 const router = Router();
-const productController = container.resolve(ProductController);
+// const productController = container.resolve(ProductController);
 
-router.get("/", asyncHandler(productController.getProducts));
+let productController: ProductController;
 
-router.get("/:productId", asyncHandler(productController.getProductById));
+const getController = () => {
+    if (!productController) {
+        productController = container.resolve(ProductController);
+    }
+    return productController;
+};
 
-router.post("/", asyncHandler(productController.createProduct));
+router.get("/", asyncHandler((req, res) => getController().getProducts(req, res)));
+
+router.get("/:productId", asyncHandler((req, res) => getController().getProductById(req, res)));
+
+router.post("/", asyncHandler((req, res) => getController().createProduct(req, res)));
 
 export { router as productRoutes };

@@ -6,10 +6,11 @@ import { DatabaseConnection } from "./infrastructure/database/DatabaseConnection
 import { Logger } from "./infrastructure/logging/Logger.js";
 import { ENV } from "./config/env.js";
 import { ErrorHandler } from "./presentation/middlewares/ErrorHandler.js";
-import { apiRoutes } from "./presentation/routes/index.js";
 
 // Setup DI Container
 setupDependencyInjection();
+
+import { apiRoutes } from "./presentation/routes/index.js";
 
 const app = express();
 const logger = container.resolve(Logger);

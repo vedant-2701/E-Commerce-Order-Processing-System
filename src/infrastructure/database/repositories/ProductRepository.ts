@@ -77,9 +77,9 @@ export class ProductRepository implements IProductRepository {
                 description: product.description,
                 price: product.price,
                 categoryId: product.categoryId,
-                imageUrl: product.imageUrl,
+                imageUrl: product.imageUrl ?? undefined,
                 isActive: product.isActive,
-                metadata: product.metadata as any,
+                metadata: (product.metadata as any) ?? undefined,
             },
         });
 

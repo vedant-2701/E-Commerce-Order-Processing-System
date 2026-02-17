@@ -4,12 +4,21 @@ import { CategoryController } from "../controllers/CategoryController.js";
 import { asyncHandler } from "../middlewares/AsyncHandler.js";
 
 const router = Router();
-const categoryController = container.resolve(CategoryController);
+// const categoryController = container.resolve(CategoryController);
 
-router.get("/", asyncHandler(categoryController.getCategories));
+let categoryController: CategoryController;
 
-router.get("/:categoryId", asyncHandler(categoryController.getCategoryById));
+const getController = () => {
+    if (!categoryController) {
+        categoryController = container.resolve(CategoryController);
+    }
+    return categoryController;
+};
 
-router.post("/", asyncHandler(categoryController.createCategory));
+router.get("/", asyncHandler((req, res) => getController().getCategories(req, res)));
+
+router.get("/:categoryId", asyncHandler((req, res) => getController().getCategoryById(req, res)));
+
+router.post("/", asyncHandler((req, res) => getController().createCategory(req, res)));
 
 export { router as categoryRoutes };

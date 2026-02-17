@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { AddToCartUseCase } from "../../application/use-cases/cart/AddToCartUseCase.js";
 import { RemoveFromCartUseCase } from "../../application/use-cases/cart/RemoveFromCartUseCase.js";
 import { GetCartUseCase } from "../../application/use-cases/cart/GetCartUseCase.js";
@@ -12,9 +12,16 @@ import { Logger } from "../../infrastructure/logging/Logger.js";
 @injectable()
 export class CartController {
     constructor(
+        @inject(AddToCartUseCase)
         private readonly addToCartUseCase: AddToCartUseCase,
+
+        @inject(RemoveFromCartUseCase)
         private readonly removeFromCartUseCase: RemoveFromCartUseCase,
+
+        @inject(GetCartUseCase)
         private readonly getCartUseCase: GetCartUseCase,
+
+        @inject(Logger)
         private readonly logger: Logger,
     ) {}
 

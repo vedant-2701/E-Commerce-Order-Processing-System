@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { CreateProductUseCase } from "../../application/use-cases/product/CreateProductUseCase.js";
 import { GetProductsUseCase } from "../../application/use-cases/product/GetProductsUseCase.js";
 import { GetProductByIdUseCase } from "../../application/use-cases/product/GetProductByIdUseCase.js";
@@ -9,9 +9,16 @@ import { Logger } from "../../infrastructure/logging/Logger.js";
 @injectable()
 export class ProductController {
     constructor(
+        @inject(CreateProductUseCase)
         private readonly createProductUseCase: CreateProductUseCase,
+        
+        @inject(GetProductsUseCase)
         private readonly getProductsUseCase: GetProductsUseCase,
+        
+        @inject(GetProductByIdUseCase)
         private readonly getProductByIdUseCase: GetProductByIdUseCase,
+        
+        @inject(Logger)
         private readonly logger: Logger,
     ) {}
 
