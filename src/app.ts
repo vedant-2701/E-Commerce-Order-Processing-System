@@ -6,7 +6,7 @@ import { DatabaseConnection } from "./infrastructure/database/DatabaseConnection
 import { Logger } from "./infrastructure/logging/Logger.js";
 import { ENV } from "./config/env.js";
 import { ErrorHandler } from "./presentation/middlewares/ErrorHandler.js";
-// import { apiRoutes } from "./presentation/routes.js";
+import { apiRoutes } from "./presentation/routes/index.js";
 
 // Setup DI Container
 setupDependencyInjection();
@@ -42,7 +42,7 @@ app.get("/health", async (req, res) => {
 });
 
 // API Routes
-// app.use("/api", apiRoutes);
+app.use("/api", apiRoutes);
 
 // 404 handler
 app.use((req, res) => {

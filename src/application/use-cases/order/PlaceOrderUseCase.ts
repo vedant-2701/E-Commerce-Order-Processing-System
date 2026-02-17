@@ -1,4 +1,3 @@
-// application/use-cases/order/PlaceOrderUseCase.ts
 import { injectable, inject } from "tsyringe";
 import { v4 as uuidv4 } from "uuid";
 import { DI_TOKENS } from "@config/di-tokens.js";

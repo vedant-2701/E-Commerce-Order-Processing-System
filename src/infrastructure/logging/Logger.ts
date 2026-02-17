@@ -1,4 +1,3 @@
-// infrastructure/logging/Logger.ts
 import { injectable } from "tsyringe";
 
 export enum LogLevel {
