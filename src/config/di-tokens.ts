@@ -9,5 +9,6 @@ export const DI_TOKENS = {
     IInventoryRepository: Symbol.for("IInventoryRepository"),
     ICartRepository: Symbol.for("ICartRepository"),
     ICategoryRepository: Symbol.for('ICategoryRepository'),
+    IUserRepository: Symbol.for('IUserRepository'),
 
 } as const;
