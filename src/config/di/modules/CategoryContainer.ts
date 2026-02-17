@@ -6,7 +6,7 @@ import { CategoryRepository } from "@infrastructure/database/repositories/Catego
 import { CategoryController } from "@presentation/controllers/CategoryController.js";
 import { container } from "tsyringe";
 
-export function registerCategory() {
+export function registerCategory(): void {
     // Repositories - Transient
     container.register(DI_TOKENS.ICategoryRepository, {
         useClass: CategoryRepository,

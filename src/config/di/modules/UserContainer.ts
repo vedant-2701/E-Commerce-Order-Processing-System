@@ -7,7 +7,7 @@ import { UserRepository } from "@infrastructure/database/repositories/UserReposi
 import { UserController } from "@presentation/controllers/UserController.js";
 import { container } from "tsyringe";
 
-export function registerUser() {
+export function registerUser(): void {
     // Repositories - Transient
     container.register(DI_TOKENS.IUserRepository, { useClass: UserRepository });
     

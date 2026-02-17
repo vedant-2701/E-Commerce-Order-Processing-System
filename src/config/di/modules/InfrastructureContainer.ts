@@ -10,7 +10,7 @@ import { PayPalPaymentStrategy } from "@infrastructure/payment/strategies/PayPal
 import { ErrorHandler } from "@presentation/middlewares/ErrorHandler.js";
 import { container } from "tsyringe";
 
-export function registerInfrastructure() {
+export function registerInfrastructure(): void {
     // Infrastructure - Singletons
     container.registerSingleton<Logger>(DI_TOKENS.Logger, Logger);
     container.registerSingleton<DatabaseConnection>(

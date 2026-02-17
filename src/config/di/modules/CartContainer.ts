@@ -6,7 +6,7 @@ import { CartRepository } from "@infrastructure/database/repositories/CartReposi
 import { CartController } from "@presentation/controllers/CartController.js";
 import { container } from "tsyringe";
 
-export function registerCart() {
+export function registerCart(): void {
     // Repositories - Transient
     container.register(DI_TOKENS.ICartRepository, { useClass: CartRepository });
 

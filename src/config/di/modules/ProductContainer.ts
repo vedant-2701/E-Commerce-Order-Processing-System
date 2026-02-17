@@ -7,7 +7,7 @@ import { ProductRepository } from "@infrastructure/database/repositories/Product
 import { ProductController } from "@presentation/controllers/ProductController.js";
 import { container } from "tsyringe";
 
-export function registerProduct() {
+export function registerProduct(): void {
     // Repositories - Transient
     container.register(DI_TOKENS.IProductRepository, {
         useClass: ProductRepository,

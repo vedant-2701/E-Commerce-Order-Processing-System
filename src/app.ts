@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import express from "express";
 import { container } from "tsyringe";
-import { setupDependencyInjection } from "./config/container.js";
+import { setupDependencyInjection } from "./config/di/container.js";
 import { DatabaseConnection } from "./infrastructure/database/DatabaseConnection.js";
 import { Logger } from "./infrastructure/logging/Logger.js";
 import { ENV } from "./config/env.js";

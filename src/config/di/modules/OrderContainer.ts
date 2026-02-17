@@ -11,7 +11,7 @@ import { OrderRepository } from "@infrastructure/database/repositories/OrderRepo
 import { OrderController } from "@presentation/controllers/OrderController.js";
 import { container } from "tsyringe";
 
-export function registerOrder() {
+export function registerOrder(): void {
     // Repositories - Transient
     container.register(DI_TOKENS.IOrderRepository, {
         useClass: OrderRepository,
