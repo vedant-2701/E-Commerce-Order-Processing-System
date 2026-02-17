@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
-import { AddToCartUseCase } from "../../application/use-cases/cart/AddToCartUseCase.js";
-import { RemoveFromCartUseCase } from "../../application/use-cases/cart/RemoveFromCartUseCase.js";
-import { GetCartUseCase } from "../../application/use-cases/cart/GetCartUseCase.js";
+import { AddToCartUseCase } from "@application/use-cases/cart/AddToCartUseCase.js";
+import { RemoveFromCartUseCase } from "@application/use-cases/cart/RemoveFromCartUseCase.js";
+import { GetCartUseCase } from "@application/use-cases/cart/GetCartUseCase.js";
 import {
     AddToCartDTO,
     RemoveFromCartDTO,
-} from "../../application/dto/CartItemDTO.js";
-import { Logger } from "../../infrastructure/logging/Logger.js";
+} from "@application/dto/CartItemDTO.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
 
 @injectable()
 export class CartController {

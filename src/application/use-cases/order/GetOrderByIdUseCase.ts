@@ -1,8 +1,8 @@
 import { injectable, inject } from "tsyringe";
 import type { IOrderRepository } from "../../interfaces/repositories/IOrderRepository.js";
-import { Order } from "../../../domain/entities/Order.js";
-import { NotFoundError } from "../../../shared/errors/NotFoundError.js";
-import { Logger } from "../../../infrastructure/logging/Logger.js";
+import { Order } from "@domain/entities/Order.js";
+import { NotFoundError } from "@shared/errors/NotFoundError.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
 @injectable()

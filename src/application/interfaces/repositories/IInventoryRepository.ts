@@ -1,4 +1,4 @@
-import type { Inventory } from "../../../domain/entities/Inventory.js";
+import type { Inventory } from "@domain/entities/Inventory.js";
 
 export interface IInventoryRepository {
     findByProductId(productId: string): Promise<Inventory | null>;

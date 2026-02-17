@@ -4,9 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import { CreateUserDTO, UserResponseDTO } from '../../dto/UserDTO.js';
 import type { IUserRepository } from '../../interfaces/repositories/IUserRepository.js';
-import { User } from '../../../domain/entities/User.js';
-import { ValidationError } from '../../../shared/errors/ValidationError.js';
-import { Logger } from '../../../infrastructure/logging/Logger.js';
+import { User } from '@domain/entities/User.js';
+import { ValidationError } from '@shared/errors/ValidationError.js';
+import { Logger } from '@infrastructure/logging/Logger.js';
 
 @injectable()
 export class CreateUserUseCase {

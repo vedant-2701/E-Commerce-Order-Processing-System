@@ -1,4 +1,4 @@
-import type { Order } from "../../../domain/entities/Order.js";
+import type { Order } from "@domain/entities/Order.js";
 
 export interface IOrderRepository {
     create(order: Order): Promise<Order>;

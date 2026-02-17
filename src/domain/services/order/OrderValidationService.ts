@@ -1,11 +1,11 @@
 import { injectable, inject } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
-import type { IProductRepository } from '../../../application/interfaces/repositories/IProductRepository.js';
-import type { IInventoryRepository } from '../../../application/interfaces/repositories/IInventoryRepository.js';
+import type { IProductRepository } from '@application/interfaces/repositories/IProductRepository.js';
+import type { IInventoryRepository } from '@application/interfaces/repositories/IInventoryRepository.js';
 import { OrderItem } from '../../entities/OrderItem.js';
-import { ValidationError } from '../../../shared/errors/ValidationError.js';
+import { ValidationError } from '@shared/errors/ValidationError.js';
 import { InsufficientInventoryException } from '../../exceptions/InsufficientInventoryException.js';
-import { Logger } from '../../../infrastructure/logging/Logger.js';
+import { Logger } from '@infrastructure/logging/Logger.js';
 import { v4 as uuidv4 } from 'uuid';
 
 @injectable()

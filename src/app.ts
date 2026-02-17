@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import express from "express";
 import { container } from "tsyringe";
-import { setupDependencyInjection } from "./config/di/container.js";
-import { DatabaseConnection } from "./infrastructure/database/DatabaseConnection.js";
-import { Logger } from "./infrastructure/logging/Logger.js";
-import { ENV } from "./config/env.js";
-import { ErrorHandler } from "./presentation/middlewares/ErrorHandler.js";
+import { setupDependencyInjection } from "@config/di/container.js";
+import { DatabaseConnection } from "@infrastructure/database/DatabaseConnection.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
+import { ENV } from "@config/env.js";
+import { ErrorHandler } from "@presentation/middlewares/ErrorHandler.js";
 
 // Setup DI Container
 setupDependencyInjection();
@@ -27,6 +27,7 @@ app.use((req, res, next) => {
         method: req.method,
         path: req.path,
         body: req.body,
+        ip: req.ip,
     });
     next();
 });

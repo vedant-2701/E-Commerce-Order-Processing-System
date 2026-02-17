@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import type { INotificationStrategy } from "../../application/interfaces/services/INotificationService.js";
+import type { INotificationStrategy } from "@application/interfaces/services/INotificationService.js";
 import { EmailNotificationStrategy } from "./strategies/EmailNotificationStrategy.js";
 import { SmsNotificationStrategy } from "./strategies/SmsNotificationStrategy.js";
 

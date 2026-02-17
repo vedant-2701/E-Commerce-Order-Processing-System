@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { Order } from '../../entities/Order.js';
 import { Payment } from '../../entities/Payment.js';
 import { PaymentStatus } from '../../enums/PaymentStatus.js';
-import { PlaceOrderDTO } from '../../../application/dto/PlaceOrderDTO.js';
-import { PaymentProcessorFactory } from '../../../infrastructure/payment/PaymentProcessorFactory.js';
-import { Logger } from '../../../infrastructure/logging/Logger.js';
+import { PlaceOrderDTO } from '@application/dto/PlaceOrderDTO.js';
+import { PaymentProcessorFactory } from '@infrastructure/payment/PaymentProcessorFactory.js';
+import { Logger } from '@infrastructure/logging/Logger.js';
 
 @injectable()
 export class PaymentService {

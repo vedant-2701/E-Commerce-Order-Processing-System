@@ -4,8 +4,8 @@ import type { IUserRepository } from '../../interfaces/repositories/IUserReposit
 import type { IOrderRepository } from '../../interfaces/repositories/IOrderRepository.js';
 import { UserResponseDTO } from '../../dto/UserDTO.js';
 import { OrderResponseDTO } from '../../dto/OrderResponseDTO.js';
-import { NotFoundError } from '../../../shared/errors/NotFoundError.js';
-import { Logger } from '../../../infrastructure/logging/Logger.js';
+import { NotFoundError } from '@shared/errors/NotFoundError.js';
+import { Logger } from '@infrastructure/logging/Logger.js';
 
 export interface UserWithOrdersDTO {
     user: UserResponseDTO;

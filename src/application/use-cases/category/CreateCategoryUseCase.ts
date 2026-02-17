@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 import { DI_TOKENS } from "@config/di-tokens.js";
 import { CreateCategoryDTO } from "../../dto/CategoryDTO.js";
 import type { ICategoryRepository } from "../../interfaces/repositories/ICategoryRepository.js";
-import { Category } from "../../../domain/entities/Category.js";
-import { ValidationError } from "../../../shared/errors/ValidationError.js";
-import { Logger } from "../../../infrastructure/logging/Logger.js";
+import { Category } from "@domain/entities/Category.js";
+import { ValidationError } from "@shared/errors/ValidationError.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
 
 @injectable()
 export class CreateCategoryUseCase {

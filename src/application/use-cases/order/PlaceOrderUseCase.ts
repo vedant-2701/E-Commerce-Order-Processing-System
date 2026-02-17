@@ -1,18 +1,18 @@
 import { injectable, inject } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import { PlaceOrderDTO } from '../../dto/PlaceOrderDTO.js';
-import { Order } from '../../../domain/entities/Order.js';
-import { PaymentStatus } from '../../../domain/enums/PaymentStatus.js';
-import { OrderStatus } from '../../../domain/enums/OrderStatus.js';
+import { Order } from '@domain/entities/Order.js';
+import { PaymentStatus } from '@domain/enums/PaymentStatus.js';
+import { OrderStatus } from '@domain/enums/OrderStatus.js';
 import type { IOrderRepository } from '../../interfaces/repositories/IOrderRepository.js';
-import { OrderValidationService } from '../../../domain/services/order/OrderValidationService.js';
-import { OrderPricingService } from '../../../domain/services/order/OrderPricingService.js';
-import { OrderFactory } from '../../../domain/factories/OrderFactory.js';
-import { InventoryService } from '../../../domain/services/order/InventoryService.js';
-import { PaymentService } from '../../../domain/services/payment/PaymentService.js';
-import { NotificationService } from '../../../infrastructure/notifications/NotificationService.js';
-import { PaymentFailedException } from '../../../domain/exceptions/PaymentFailedException.js';
-import { Logger } from '../../../infrastructure/logging/Logger.js';
+import { OrderValidationService } from '@domain/services/order/OrderValidationService.js';
+import { OrderPricingService } from '@domain/services/order/OrderPricingService.js';
+import { OrderFactory } from '@domain/factories/OrderFactory.js';
+import { InventoryService } from '@domain/services/order/InventoryService.js';
+import { PaymentService } from '@domain/services/payment/PaymentService.js';
+import { NotificationService } from '@infrastructure/notifications/NotificationService.js';
+import { PaymentFailedException } from '@domain/exceptions/PaymentFailedException.js';
+import { Logger } from '@infrastructure/logging/Logger.js';
 
 @injectable()
 export class PlaceOrderUseCase {

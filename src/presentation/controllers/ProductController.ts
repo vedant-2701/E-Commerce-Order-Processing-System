@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { inject, injectable } from "tsyringe";
-import { CreateProductUseCase } from "../../application/use-cases/product/CreateProductUseCase.js";
-import { GetProductsUseCase } from "../../application/use-cases/product/GetProductsUseCase.js";
-import { GetProductByIdUseCase } from "../../application/use-cases/product/GetProductByIdUseCase.js";
-import { CreateProductDTO } from "../../application/dto/ProductDTO.js";
-import { Logger } from "../../infrastructure/logging/Logger.js";
+import { CreateProductUseCase } from "@application/use-cases/product/CreateProductUseCase.js";
+import { GetProductsUseCase } from "@application/use-cases/product/GetProductsUseCase.js";
+import { GetProductByIdUseCase } from "@application/use-cases/product/GetProductByIdUseCase.js";
+import { CreateProductDTO } from "@application/dto/ProductDTO.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
 
 @injectable()
 export class ProductController {

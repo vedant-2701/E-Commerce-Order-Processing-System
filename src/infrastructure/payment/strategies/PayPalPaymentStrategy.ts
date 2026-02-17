@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import type {
     IPaymentProcessor,
     PaymentResult,
-} from "../../../application/interfaces/services/IPaymentProcessor.js";
+} from "@application/interfaces/services/IPaymentProcessor.js";
 import { Logger } from "../../logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 

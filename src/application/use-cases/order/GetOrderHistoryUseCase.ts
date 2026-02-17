@@ -1,7 +1,7 @@
 import { injectable, inject } from "tsyringe";
 import type { IOrderRepository } from "../../interfaces/repositories/IOrderRepository.js";
 import { OrderResponseDTO } from "../../dto/OrderResponseDTO.js";
-import { Logger } from "../../../infrastructure/logging/Logger.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
 @injectable()

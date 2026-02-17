@@ -2,8 +2,8 @@ import { injectable, inject } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import type { IUserRepository } from '../../interfaces/repositories/IUserRepository.js';
 import { UserResponseDTO } from '../../dto/UserDTO.js';
-import { NotFoundError } from '../../../shared/errors/NotFoundError.js';
-import { Logger } from '../../../infrastructure/logging/Logger.js';
+import { NotFoundError } from '@shared/errors/NotFoundError.js';
+import { Logger } from '@infrastructure/logging/Logger.js';
 
 @injectable()
 export class GetUserByIdUseCase {

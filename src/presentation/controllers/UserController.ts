@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
-import { GetUserByIdUseCase } from "../../application/use-cases/user/GetUserByIdUseCase.js";
-import { GetUserWithOrdersUseCase } from "../../application/use-cases/user/GetUserWithOrdersUseCase.js";
-import { UpdateUserUseCase } from "../../application/use-cases/user/UpdateUserUseCase.js";
-import { UpdateUserDTO } from "../../application/dto/UserDTO.js";
+import { GetUserByIdUseCase } from "@application/use-cases/user/GetUserByIdUseCase.js";
+import { GetUserWithOrdersUseCase } from "@application/use-cases/user/GetUserWithOrdersUseCase.js";
+import { UpdateUserUseCase } from "@application/use-cases/user/UpdateUserUseCase.js";
+import { UpdateUserDTO } from "@application/dto/UserDTO.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
-import { Logger } from "../../infrastructure/logging/Logger.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
 import { CreateUserUseCase } from "@application/use-cases/user/CreateUserUseCase.js";
 
 @injectable()

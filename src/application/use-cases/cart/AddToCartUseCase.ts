@@ -3,11 +3,11 @@ import { v4 as uuidv4 } from "uuid";
 import { AddToCartDTO } from "../../dto/CartItemDTO.js";
 import type { ICartRepository } from "../../interfaces/repositories/ICartRepository.js";
 import type { IProductRepository } from "../../interfaces/repositories/IProductRepository.js";
-import { Cart } from "../../../domain/entities/Cart.js";
-import { CartItem } from "../../../domain/entities/CartItem.js";
-import { ValidationError } from "../../../shared/errors/ValidationError.js";
-import { NotFoundError } from "../../../shared/errors/NotFoundError.js";
-import { Logger } from "../../../infrastructure/logging/Logger.js";
+import { Cart } from "@domain/entities/Cart.js";
+import { CartItem } from "@domain/entities/CartItem.js";
+import { ValidationError } from "@shared/errors/ValidationError.js";
+import { NotFoundError } from "@shared/errors/NotFoundError.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
 @injectable()

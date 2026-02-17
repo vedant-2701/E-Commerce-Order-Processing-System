@@ -1,5 +1,5 @@
-import type { Cart } from "../../../domain/entities/Cart.js";
-import type { CartItem } from "../../../domain/entities/CartItem.js";
+import type { Cart } from "@domain/entities/Cart.js";
+import type { CartItem } from "@domain/entities/CartItem.js";
 
 export interface ICartRepository {
     findByUserId(userId: string): Promise<Cart | null>;

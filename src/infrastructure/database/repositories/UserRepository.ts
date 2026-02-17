@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
-import { User } from '../../../domain/entities/User.js';
-import { IUserRepository } from '../../../application/interfaces/repositories/IUserRepository.js';
+import { User } from '@domain/entities/User.js';
+import { IUserRepository } from '@application/interfaces/repositories/IUserRepository.js';
 import { DatabaseConnection } from '../DatabaseConnection.js';
 
 @injectable()

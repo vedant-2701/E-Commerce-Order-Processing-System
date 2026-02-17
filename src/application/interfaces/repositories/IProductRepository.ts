@@ -1,4 +1,4 @@
-import type { Product } from "../../../domain/entities/Product.js";
+import type { Product } from "@domain/entities/Product.js";
 
 export interface IProductRepository {
     create(product: Product): Promise<Product>;

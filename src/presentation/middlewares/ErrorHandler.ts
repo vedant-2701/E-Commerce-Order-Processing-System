@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { AppError } from "../../shared/errors/AppError.js";
-import { Logger } from "../../infrastructure/logging/Logger.js";
+import { AppError } from "@shared/errors/AppError.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
 import { injectable, inject } from "tsyringe";
 import { DI_TOKENS } from "@config/di-tokens.js";
 

@@ -2,7 +2,7 @@ import { injectable, inject } from "tsyringe";
 import type { ICartRepository } from "../../interfaces/repositories/ICartRepository.js";
 import type { IProductRepository } from "../../interfaces/repositories/IProductRepository.js";
 import { CartResponseDTO } from "../../dto/CartItemDTO.js";
-import { Logger } from "../../../infrastructure/logging/Logger.js";
+import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
 @injectable()

@@ -1,4 +1,4 @@
-import { OrderStatus } from "../../domain/enums/OrderStatus.js";
+import { OrderStatus } from "@domain/enums/OrderStatus.js";
 
 export interface OrderResponseDTO {
     id: string;

@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
-import type { IInventoryRepository } from '../../../application/interfaces/repositories/IInventoryRepository.js';
-import { Logger } from '../../../infrastructure/logging/Logger.js';
+import type { IInventoryRepository } from '@application/interfaces/repositories/IInventoryRepository.js';
+import { Logger } from '@infrastructure/logging/Logger.js';
 
 @injectable()
 export class InventoryService {
