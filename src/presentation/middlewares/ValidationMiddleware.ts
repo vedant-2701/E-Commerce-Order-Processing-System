@@ -1,54 +1,33 @@
-import type { Request, Response, NextFunction } from "express";
-import { ValidationError } from "../../shared/errors/ValidationError.js";
+import { Request, Response, NextFunction } from 'express';
+import { ZodObject, ZodError, z } from 'zod';
 
-export class ValidationMiddleware {
-    static validatePlaceOrder(
-        req: Request,
-        res: Response,
-        next: NextFunction,
-    ): void {
-        const { userId, items, shippingAddress, paymentMethod } = req.body;
+export const validate = (schema: ZodObject<any>) => {
+    return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            // Validate request against schema
+            await schema.parseAsync({
+                body: req.body,
+                params: req.params,
+                query: req.query,
+            });
 
-        if (!userId) {
-            throw new ValidationError("userId is required");
+            next();
+        } catch (error) {
+            if (error instanceof ZodError) {
+
+                res.status(400).json({
+                    error: {
+                        name: 'ValidationError',
+                        message: 'Validation failed',
+                        statusCode: 400,
+                        errorCode: 'VALIDATION_ERROR',
+                        details: z.treeifyError(error),
+                    },
+                });
+                return;
+            }
+
+            next(error);
         }
-
-        if (!items || !Array.isArray(items) || items.length === 0) {
-            throw new ValidationError(
-                "items array is required and must not be empty",
-            );
-        }
-
-        if (!shippingAddress) {
-            throw new ValidationError("shippingAddress is required");
-        }
-
-        if (!paymentMethod) {
-            throw new ValidationError("paymentMethod is required");
-        }
-
-        next();
-    }
-
-    static validateAddToCart(
-        req: Request,
-        res: Response,
-        next: NextFunction,
-    ): void {
-        const { userId, productId, quantity } = req.body;
-
-        if (!userId) {
-            throw new ValidationError("userId is required");
-        }
-
-        if (!productId) {
-            throw new ValidationError("productId is required");
-        }
-
-        if (!quantity || quantity <= 0) {
-            throw new ValidationError("quantity must be greater than 0");
-        }
-
-        next();
-    }
-}
+    };
+};

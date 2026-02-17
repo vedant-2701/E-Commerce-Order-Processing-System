@@ -2,10 +2,14 @@ import { Router } from "express";
 import { container } from "tsyringe";
 import { CartController } from "../controllers/CartController.js";
 import { asyncHandler } from "../middlewares/AsyncHandler.js";
-import { ValidationMiddleware } from "@presentation/middlewares/ValidationMiddleware.js";
+import { validate } from "@presentation/middlewares/ValidationMiddleware.js";
+import {
+    addToCartSchema,
+    getCartSchema,
+    removeFromCartSchema,
+} from "@presentation/validators/cartValidator.js";
 
 const router = Router();
-// const cartController = container.resolve(CartController);
 
 let cartController: CartController;
 
@@ -16,14 +20,22 @@ const getController = () => {
     return cartController;
 };
 
-router.get("/:userId", asyncHandler((req, res) => getController().getCart(req, res)));
-
-router.post(
-    "/add", 
-    ValidationMiddleware.validateAddToCart,
-    asyncHandler((req, res) => getController().addToCart(req, res))
+router.get(
+    "/:userId",
+    validate(getCartSchema),
+    asyncHandler((req, res) => getController().getCart(req, res)),
 );
 
-router.delete("/remove", asyncHandler((req, res) => getController().removeFromCart(req, res)));
+router.post(
+    "/add",
+    validate(addToCartSchema),
+    asyncHandler((req, res) => getController().addToCart(req, res)),
+);
+
+router.delete(
+    "/remove",
+    validate(removeFromCartSchema),
+    asyncHandler((req, res) => getController().removeFromCart(req, res)),
+);
 
 export { router as cartRoutes };
