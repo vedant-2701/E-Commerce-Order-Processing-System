@@ -38,7 +38,7 @@ export class CreateUserUseCase {
             email: dto.email,
             firstName: dto.firstName,
             lastName: dto.lastName,
-            passwordHash,
+            password: passwordHash,
             phone: dto.phone ?? undefined,
             createdAt: new Date(),
             updatedAt: new Date(),

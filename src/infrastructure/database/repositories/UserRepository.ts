@@ -22,7 +22,7 @@ export class UserRepository implements IUserRepository {
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                passwordHash: user.passwordHash,
+                password: user.password,
                 phone: user.phone ?? undefined,
             },
         });
@@ -71,7 +71,7 @@ export class UserRepository implements IUserRepository {
             email: prismaUser.email,
             firstName: prismaUser.firstName,
             lastName: prismaUser.lastName,
-            passwordHash: prismaUser.passwordHash,
+            password: prismaUser.password,
             phone: prismaUser.phone ?? undefined,
             createdAt: prismaUser.createdAt,
             updatedAt: prismaUser.updatedAt,
