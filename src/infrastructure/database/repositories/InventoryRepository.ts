@@ -1,10 +1,12 @@
 import { IInventoryRepository } from "@application/interfaces/repositories/IInventoryRepository.js";
-import { injectable, inject } from "tsyringe";
+import { singleton, inject } from "tsyringe";
 import { DatabaseConnection } from "../DatabaseConnection.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 import { Inventory } from "@domain/entities/Inventory.js";
+import { Prisma } from "generated/prisma/client.js";
+import type { TransactionContext } from "@application/interfaces/repositories/IInventoryRepository.js";
 
-@injectable()
+@singleton()
 export class InventoryRepository implements IInventoryRepository {
     constructor(
         @inject(DI_TOKENS.DatabaseConnection)
@@ -105,5 +107,31 @@ export class InventoryRepository implements IInventoryRepository {
             updatedAt: prismaInventory.updatedAt,
             createdAt: prismaInventory.createdAt,
         };
+    }
+
+    /**
+     * Atomically decrement stock using a single UPDATE with a WHERE guard.
+     * - No read-modify-write race condition
+     * - Implicit row-level lock only during the UPDATE (microseconds)
+     * - Returns true if rows affected, false if insufficient stock
+     */
+    async atomicDeductStock(
+        productId: string,
+        quantity: number,
+        tx?: TransactionContext,
+    ): Promise<boolean> {
+        const client = (tx as Prisma.TransactionClient) ?? this.prisma;
+
+        const result = await client.inventory.updateMany({
+            where: {
+                productId,
+                quantity: { gte: quantity },
+            },
+            data: {
+                quantity: { decrement: quantity },
+            },
+        });
+
+        return result.count > 0;
     }
 }

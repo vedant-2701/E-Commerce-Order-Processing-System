@@ -1,11 +1,11 @@
-import { injectable, inject } from "tsyringe";
+import { singleton, inject } from "tsyringe";
 import { RemoveFromCartDTO } from "../../dto/CartItemDTO.js";
 import type { ICartRepository } from "../../interfaces/repositories/ICartRepository.js";
 import { NotFoundError } from "@shared/errors/NotFoundError.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
-@injectable()
+@singleton()
 export class RemoveFromCartUseCase {
     constructor(
         @inject(DI_TOKENS.ICartRepository)

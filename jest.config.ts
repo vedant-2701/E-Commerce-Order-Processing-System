@@ -17,6 +17,7 @@ export default {
         '^@infrastructure/(.*)\\.js$': '<rootDir>/src/infrastructure/$1',
         '^@presentation/(.*)\\.js$': '<rootDir>/src/presentation/$1',
         '^@shared/(.*)\\.js$': '<rootDir>/src/shared/$1',
+        '^generated/(.*)\\.js$': '<rootDir>/src/generated/$1',
         '^(\\.{1,2}/.*)\\.js$': '$1',
     },
     extensionsToTreatAsEsm: ['.ts'],

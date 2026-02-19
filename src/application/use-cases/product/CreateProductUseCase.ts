@@ -1,4 +1,4 @@
-import { injectable, inject } from "tsyringe";
+import { singleton, inject } from "tsyringe";
 import { v4 as uuidv4 } from "uuid";
 import { CreateProductDTO } from "../../dto/ProductDTO.js";
 import type { IProductRepository } from "../../interfaces/repositories/IProductRepository.js";
@@ -9,7 +9,7 @@ import { ValidationError } from "@shared/errors/ValidationError.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
-@injectable()
+@singleton()
 export class CreateProductUseCase {
     constructor(
         @inject(DI_TOKENS.IProductRepository)

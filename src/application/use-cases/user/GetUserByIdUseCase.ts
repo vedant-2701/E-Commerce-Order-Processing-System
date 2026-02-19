@@ -1,11 +1,12 @@
-import { injectable, inject } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import type { IUserRepository } from '../../interfaces/repositories/IUserRepository.js';
 import { UserResponseDTO } from '../../dto/UserDTO.js';
 import { NotFoundError } from '@shared/errors/NotFoundError.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
+import { User } from '@domain/entities/User.js';
 
-@injectable()
+@singleton()
 export class GetUserByIdUseCase {
     constructor(
         @inject(DI_TOKENS.IUserRepository)
@@ -26,7 +27,7 @@ export class GetUserByIdUseCase {
         return this.toResponseDTO(user);
     }
 
-    private toResponseDTO(user: any): UserResponseDTO {
+    private toResponseDTO(user: User): UserResponseDTO {
         return {
             id: user.id,
             email: user.email,

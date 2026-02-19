@@ -1,4 +1,4 @@
-import { injectable, inject } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import type { IUserRepository } from '../../interfaces/repositories/IUserRepository.js';
 import type { IOrderRepository } from '../../interfaces/repositories/IOrderRepository.js';
@@ -14,7 +14,7 @@ export interface UserWithOrdersDTO {
     totalSpent: number;
 }
 
-@injectable()
+@singleton()
 export class GetUserWithOrdersUseCase {
     constructor(
         @inject(DI_TOKENS.IUserRepository)

@@ -8,6 +8,7 @@ import {
     RemoveFromCartDTO,
 } from "@application/dto/CartItemDTO.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
+import { DI_TOKENS } from "@config/di-tokens.js";
 
 @injectable()
 export class CartController {
@@ -21,7 +22,7 @@ export class CartController {
         @inject(GetCartUseCase)
         private readonly getCartUseCase: GetCartUseCase,
 
-        @inject(Logger)
+        @inject(DI_TOKENS.Logger)
         private readonly logger: Logger,
     ) {}
 

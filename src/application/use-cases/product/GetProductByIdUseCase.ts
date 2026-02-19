@@ -1,4 +1,4 @@
-import { injectable, inject } from "tsyringe";
+import { singleton, inject } from "tsyringe";
 import type { IProductRepository } from "../../interfaces/repositories/IProductRepository.js";
 import type { IInventoryRepository } from "../../interfaces/repositories/IInventoryRepository.js";
 import { ProductResponseDTO } from "../../dto/ProductDTO.js";
@@ -6,7 +6,7 @@ import { NotFoundError } from "@shared/errors/NotFoundError.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
-@injectable()
+@singleton()
 export class GetProductByIdUseCase {
     constructor(
         @inject(DI_TOKENS.IProductRepository)

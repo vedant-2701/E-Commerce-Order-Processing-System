@@ -31,7 +31,7 @@ orderRoutes.get(
     asyncHandler((req, res) => getController().getOrderHistory(req, res)),
 );
 orderRoutes.get(
-    "/:id",
+    "/:orderId",
     validate(getOrderByIdSchema),
     asyncHandler((req, res) => getController().getOrderById(req, res)),
 );

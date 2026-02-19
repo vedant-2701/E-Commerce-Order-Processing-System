@@ -1,9 +1,9 @@
-import { inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import type { INotificationStrategy } from "@application/interfaces/services/INotificationService.js";
 import { EmailNotificationStrategy } from "./strategies/EmailNotificationStrategy.js";
 import { SmsNotificationStrategy } from "./strategies/SmsNotificationStrategy.js";
 
-@injectable()
+@singleton()
 export class NotificationService {
     private strategies: Map<string, INotificationStrategy> = new Map();
 

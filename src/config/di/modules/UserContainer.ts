@@ -9,7 +9,7 @@ import { container } from "tsyringe";
 
 export function registerUser(): void {
     // Repositories - Transient
-    container.register(DI_TOKENS.IUserRepository, { useClass: UserRepository });
+    container.registerSingleton(DI_TOKENS.IUserRepository, UserRepository);
     
     // User Use Cases
     container.registerSingleton<GetUserByIdUseCase>(GetUserByIdUseCase);

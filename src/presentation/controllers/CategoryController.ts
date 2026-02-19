@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { injectable, inject } from "tsyringe";
+import { singleton, inject } from "tsyringe";
 import { CreateCategoryUseCase } from "@application/use-cases/category/CreateCategoryUseCase.js";
 import { GetCategoriesUseCase } from "@application/use-cases/category/GetCategoriesUseCase.js";
 import { GetCategoryByIdUseCase } from "@application/use-cases/category/GetCategoryByIdUseCase.js";
@@ -7,7 +7,7 @@ import { CreateCategoryDTO } from "@application/dto/CategoryDTO.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 
-@injectable()
+@singleton()
 export class CategoryController {
     constructor(
         @inject(CreateCategoryUseCase)

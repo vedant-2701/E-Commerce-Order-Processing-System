@@ -22,5 +22,5 @@ export function registerProduct(): void {
     container.registerSingleton<GetProductByIdUseCase>(GetProductByIdUseCase);
 
     // Controllers - Singletons
-    container.registerSingleton<ProductController>(ProductController);
+    container.register<ProductController>(ProductController, { useClass: ProductController });
 }

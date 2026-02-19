@@ -1,11 +1,11 @@
-import { injectable, inject } from "tsyringe";
+import { singleton, inject } from "tsyringe";
 import { DI_TOKENS } from "@config/di-tokens.js";
 import type { ICategoryRepository } from "../../interfaces/repositories/ICategoryRepository.js";
 import { Category } from "@domain/entities/Category.js";
 import { NotFoundError } from "@shared/errors/NotFoundError.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 
-@injectable()
+@singleton()
 export class GetCategoryByIdUseCase {
     constructor(
         @inject(DI_TOKENS.ICategoryRepository)

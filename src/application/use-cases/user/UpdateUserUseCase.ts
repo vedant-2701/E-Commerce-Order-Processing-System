@@ -1,11 +1,11 @@
-import { injectable, inject } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import type { IUserRepository } from '../../interfaces/repositories/IUserRepository.js';
 import { UpdateUserDTO, UserResponseDTO } from '../../dto/UserDTO.js';
 import { NotFoundError } from '@shared/errors/NotFoundError.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
 
-@injectable()
+@singleton()
 export class UpdateUserUseCase {
     constructor(
         @inject(DI_TOKENS.IUserRepository)

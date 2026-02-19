@@ -1,4 +1,4 @@
-import { injectable } from "tsyringe";
+import { singleton } from "tsyringe";
 
 export enum LogLevel {
     DEBUG = "DEBUG",
@@ -7,7 +7,7 @@ export enum LogLevel {
     ERROR = "ERROR",
 }
 
-@injectable()
+@singleton()
 export class Logger {
     constructor(private readonly serviceName: string = "ECommerceService") {}
 

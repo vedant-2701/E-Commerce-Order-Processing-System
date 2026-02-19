@@ -1,4 +1,4 @@
-import { injectable, inject } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 import { Order } from '../../entities/Order.js';
 import { Payment } from '../../entities/Payment.js';
@@ -6,14 +6,15 @@ import { PaymentStatus } from '../../enums/PaymentStatus.js';
 import { PlaceOrderDTO } from '@application/dto/PlaceOrderDTO.js';
 import { PaymentProcessorFactory } from '@infrastructure/payment/PaymentProcessorFactory.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
+import { DI_TOKENS } from '@config/di-tokens.js';
 
-@injectable()
+@singleton()
 export class PaymentService {
     constructor(
         @inject(PaymentProcessorFactory)
         private readonly paymentProcessorFactory: PaymentProcessorFactory,
 
-        @inject(Logger)
+        @inject(DI_TOKENS.Logger)
         private readonly logger: Logger
     ) {}
 

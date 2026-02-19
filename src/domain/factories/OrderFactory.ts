@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import { singleton } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 import { Order } from '../entities/Order.js';
 import { OrderItem } from '../entities/OrderItem.js';
@@ -6,7 +6,7 @@ import { OrderStatus } from '../enums/OrderStatus.js';
 import { PlaceOrderDTO } from '@application/dto/PlaceOrderDTO.js';
 import { OrderTotals } from '../services/order/OrderPricingService.js';
 
-@injectable()
+@singleton()
 export class OrderFactory {
 
     createOrder(

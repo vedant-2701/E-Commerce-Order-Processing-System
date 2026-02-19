@@ -1,11 +1,11 @@
 import { PrismaClient, Prisma } from "generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { injectable, inject } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import { Logger } from "../logging/Logger.js";
 import { ENV } from "@config/env.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
-@injectable()
+@singleton()
 export class DatabaseConnection {
     private static instance: PrismaClient;
     private prisma: PrismaClient;
@@ -73,6 +73,37 @@ export class DatabaseConnection {
             this.logger.info("Database disconnected");
         } catch (error) {
             this.logger.error("Error disconnecting from database", error);
+            throw error;
+        }
+    }
+
+    /**
+     * Execute operations within a database transaction.
+     * Auto-commits on success, auto-rolls back on error.
+     */
+    async transaction<T>(
+        callback: (tx: Prisma.TransactionClient) => Promise<T>,
+        options?: {
+            maxWait?: number;
+            timeout?: number;
+            isolationLevel?: Prisma.TransactionIsolationLevel;
+        }
+    ): Promise<T> {
+        this.logger.debug("Starting database transaction");
+
+        try {
+            const result = await this.prisma.$transaction(callback, {
+                maxWait: options?.maxWait ?? 2000,
+                timeout: options?.timeout ?? 5000,
+                isolationLevel:
+                    options?.isolationLevel ??
+                    Prisma.TransactionIsolationLevel.ReadCommitted,
+            });
+
+            this.logger.debug("Transaction committed successfully");
+            return result;
+        } catch (error) {
+            this.logger.error("Transaction rolled back", error);
             throw error;
         }
     }

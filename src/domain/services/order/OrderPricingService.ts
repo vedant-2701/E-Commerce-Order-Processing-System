@@ -1,4 +1,4 @@
-import { injectable } from "tsyringe";
+import { singleton } from "tsyringe";
 import { OrderItem } from "../../entities/OrderItem.js";
 
 export interface OrderTotals {
@@ -8,7 +8,7 @@ export interface OrderTotals {
     totalAmount: number;
 }
 
-@injectable()
+@singleton()
 export class OrderPricingService {
     private readonly TAX_RATE = 0.08;
     private readonly FREE_SHIPPING_THRESHOLD = 5000;

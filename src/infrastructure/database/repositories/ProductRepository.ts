@@ -1,10 +1,10 @@
 import { IProductRepository } from "@application/interfaces/repositories/IProductRepository.js";
-import { injectable, inject } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import { DatabaseConnection } from "../DatabaseConnection.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 import { Product } from "@domain/entities/Product.js";
 
-@injectable()
+@singleton()
 export class ProductRepository implements IProductRepository {
     constructor(
         @inject(DI_TOKENS.DatabaseConnection)

@@ -1,10 +1,10 @@
-import { injectable, inject } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import { User } from '@domain/entities/User.js';
 import { IUserRepository } from '@application/interfaces/repositories/IUserRepository.js';
 import { DatabaseConnection } from '../DatabaseConnection.js';
 
-@injectable()
+@singleton()
 export class UserRepository implements IUserRepository {
     constructor(
         @inject(DI_TOKENS.DatabaseConnection)

@@ -1,4 +1,4 @@
-import { injectable, inject } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import type { IProductRepository } from '@application/interfaces/repositories/IProductRepository.js';
 import type { IInventoryRepository } from '@application/interfaces/repositories/IInventoryRepository.js';
@@ -8,7 +8,7 @@ import { InsufficientInventoryException } from '../../exceptions/InsufficientInv
 import { Logger } from '@infrastructure/logging/Logger.js';
 import { v4 as uuidv4 } from 'uuid';
 
-@injectable()
+@singleton()
 export class OrderValidationService {
     constructor(
         @inject(DI_TOKENS.IProductRepository)

@@ -1,10 +1,10 @@
-import { injectable, inject } from "tsyringe";
+import { singleton, inject } from "tsyringe";
 import { DI_TOKENS } from "@config/di-tokens.js";
 import { Category } from "@domain/entities/Category.js";
 import { ICategoryRepository } from "@application/interfaces/repositories/ICategoryRepository.js";
 import { DatabaseConnection } from "../DatabaseConnection.js";
 
-@injectable()
+@singleton()
 export class CategoryRepository implements ICategoryRepository {
     constructor(
         @inject(DI_TOKENS.DatabaseConnection)

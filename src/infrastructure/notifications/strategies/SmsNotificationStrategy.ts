@@ -1,9 +1,9 @@
-import { inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import type { INotificationStrategy } from "@application/interfaces/services/INotificationService.js";
 import { Logger } from "../../logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
-@injectable()
+@singleton()
 export class SmsNotificationStrategy implements INotificationStrategy {
     constructor(
         @inject(DI_TOKENS.Logger)

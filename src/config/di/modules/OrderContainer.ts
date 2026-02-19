@@ -30,5 +30,5 @@ export function registerOrder(): void {
     container.registerSingleton<GetOrderByIdUseCase>(GetOrderByIdUseCase);
 
     // Controllers - Singletons
-    container.registerSingleton<OrderController>(OrderController);
+    container.register<OrderController>(OrderController, { useClass: OrderController });
 }

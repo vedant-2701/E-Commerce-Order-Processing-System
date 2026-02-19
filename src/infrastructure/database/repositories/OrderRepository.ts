@@ -1,10 +1,12 @@
 import { IOrderRepository } from "@application/interfaces/repositories/IOrderRepository.js";
-import { injectable, inject } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import { DatabaseConnection } from "../DatabaseConnection.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 import { Order } from "@domain/entities/Order.js";
+import { Prisma } from "generated/prisma/client.js";
+import type { TransactionContext } from "@application/interfaces/repositories/IInventoryRepository.js";
 
-@injectable()
+@singleton()
 export class OrderRepository implements IOrderRepository {
     constructor(
         @inject(DI_TOKENS.DatabaseConnection)
@@ -15,8 +17,10 @@ export class OrderRepository implements IOrderRepository {
         return this.dbConnection.getClient();
     }
 
-    async create(order: Order): Promise<Order> {
-        const created = await this.prisma.order.create({
+    async create(order: Order, tx?: TransactionContext): Promise<Order> {
+        const client = (tx as Prisma.TransactionClient) ?? this.prisma;
+
+        const created = await client.order.create({
             data: {
                 id: order.id,
                 userId: order.userId,

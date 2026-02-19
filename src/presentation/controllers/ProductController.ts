@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
-import { inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import { CreateProductUseCase } from "@application/use-cases/product/CreateProductUseCase.js";
 import { GetProductsUseCase } from "@application/use-cases/product/GetProductsUseCase.js";
 import { GetProductByIdUseCase } from "@application/use-cases/product/GetProductByIdUseCase.js";
 import { CreateProductDTO } from "@application/dto/ProductDTO.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
+import { DI_TOKENS } from "@config/di-tokens.js";
 
-@injectable()
+@singleton()
 export class ProductController {
     constructor(
         @inject(CreateProductUseCase)
@@ -18,7 +19,7 @@ export class ProductController {
         @inject(GetProductByIdUseCase)
         private readonly getProductByIdUseCase: GetProductByIdUseCase,
         
-        @inject(Logger)
+        @inject(DI_TOKENS.Logger)
         private readonly logger: Logger,
     ) {}
 

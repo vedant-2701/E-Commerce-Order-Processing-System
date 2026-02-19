@@ -1,4 +1,4 @@
-import { inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import type {
     IPaymentProcessor,
     PaymentResult,
@@ -6,7 +6,7 @@ import type {
 import { Logger } from "../../logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
-@injectable()
+@singleton()
 export class CreditCardPaymentStrategy implements IPaymentProcessor {
     constructor(
         @inject(DI_TOKENS.Logger)

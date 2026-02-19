@@ -18,5 +18,5 @@ export function registerCategory(): void {
     container.registerSingleton<GetCategoryByIdUseCase>(GetCategoryByIdUseCase);
 
     // Controllers - Singletons
-    container.registerSingleton<CategoryController>(CategoryController);
+    container.register<CategoryController>(CategoryController, { useClass: CategoryController });
 }

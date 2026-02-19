@@ -1,11 +1,11 @@
-import { injectable, inject } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import type { IPaymentProcessor } from "@application/interfaces/services/IPaymentProcessor.js";
 import { PaymentMethod } from "@domain/enums/PaymentMethod.js";
 import { CreditCardPaymentStrategy } from "./strategies/CreditCardPaymentStrategy.js";
 import { PayPalPaymentStrategy } from "./strategies/PayPalPaymentStrategy.js";
 import { AppError } from "@shared/errors/AppError.js";
 
-@injectable()
+@singleton()
 export class PaymentProcessorFactory {
     constructor(
         @inject(CreditCardPaymentStrategy)

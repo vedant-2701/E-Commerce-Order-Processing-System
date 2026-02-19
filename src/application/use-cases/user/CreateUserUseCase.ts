@@ -1,4 +1,4 @@
-import { injectable, inject } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { hash } from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { DI_TOKENS } from '@config/di-tokens.js';
@@ -8,7 +8,7 @@ import { User } from '@domain/entities/User.js';
 import { ValidationError } from '@shared/errors/ValidationError.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
 
-@injectable()
+@singleton()
 export class CreateUserUseCase {
     private readonly SALT_ROUNDS = 10;
 

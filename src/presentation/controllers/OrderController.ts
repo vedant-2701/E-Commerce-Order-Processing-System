@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { inject, injectable } from "tsyringe";
+import { inject, singleton } from "tsyringe";
 import { PlaceOrderUseCase } from "@application/use-cases/order/PlaceOrderUseCase.js";
 import { GetOrderHistoryUseCase } from "@application/use-cases/order/GetOrderHistoryUseCase.js";
 import { GetOrderByIdUseCase } from "@application/use-cases/order/GetOrderByIdUseCase.js";
@@ -7,7 +7,7 @@ import { PlaceOrderDTO } from "@application/dto/PlaceOrderDTO.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 
-@injectable()
+@singleton()
 export class OrderController {
     constructor(
         @inject(PlaceOrderUseCase)

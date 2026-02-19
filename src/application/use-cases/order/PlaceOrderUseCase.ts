@@ -1,4 +1,4 @@
-import { injectable, inject } from 'tsyringe';
+import { singleton, inject } from 'tsyringe';
 import { DI_TOKENS } from '@config/di-tokens.js';
 import { PlaceOrderDTO } from '../../dto/PlaceOrderDTO.js';
 import { Order } from '@domain/entities/Order.js';
@@ -13,8 +13,9 @@ import { PaymentService } from '@domain/services/payment/PaymentService.js';
 import { NotificationService } from '@infrastructure/notifications/NotificationService.js';
 import { PaymentFailedException } from '@domain/exceptions/PaymentFailedException.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
+import { DatabaseConnection } from '@infrastructure/database/DatabaseConnection.js';
 
-@injectable()
+@singleton()
 export class PlaceOrderUseCase {
     constructor(
         @inject(DI_TOKENS.IOrderRepository)
@@ -38,6 +39,9 @@ export class PlaceOrderUseCase {
         @inject(NotificationService)
         private readonly notificationService: NotificationService,
 
+        @inject(DI_TOKENS.DatabaseConnection)
+        private readonly dbConnection: DatabaseConnection,
+
         @inject(DI_TOKENS.Logger)
         private readonly logger: Logger
     ) {}
@@ -45,20 +49,19 @@ export class PlaceOrderUseCase {
     async execute(dto: PlaceOrderDTO): Promise<Order> {
         this.logger.info('Starting order placement', { userId: dto.userId });
 
-        // Validate products + stock, build items
+        // Step 1: Validate products + stock (READ-only, outside transaction)
         const orderItems = await this.orderValidationService.validateAndBuildOrderItems(dto.items);
 
-        // Calculate pricing
+        // Step 2: Calculate pricing (pure computation, no DB)
         const totals = this.orderPricingService.calculateTotals(orderItems);
 
-        // Create order entity
+        // Step 3: Create order entity (in-memory)
         const order = this.orderFactory.createOrder(dto, orderItems, totals);
 
-        // Process payment
+        // Step 4: Process payment (external API call, outside transaction)
         const payment = await this.paymentService.processPayment(order, dto);
         order.payment = payment;
 
-        // Check payment result
         if (payment.status !== PaymentStatus.CAPTURED) {
             throw new PaymentFailedException(
                 'Payment was not successful',
@@ -66,16 +69,22 @@ export class PlaceOrderUseCase {
             );
         }
 
-        // Deduct inventory
-        await this.inventoryService.deductStock(dto.items);
-
-        // Confirm order
         order.status = OrderStatus.CONFIRMED;
 
-        // Persist order
-        const savedOrder = await this.orderRepository.create(order);
+        // Step 5: CRITICAL SECTION — atomic inventory deduction + order persist
+        // Both operations share one transaction: if either fails, both roll back
+        const savedOrder = await this.dbConnection.transaction(async (tx) => {
+            // Atomic decrement: UPDATE ... WHERE quantity >= N
+            // Prevents overselling even with concurrent requests
+            await this.inventoryService.deductStock(dto.items, tx);
 
-        //  Notify user (async, fire and forget)
+            // Persist order + items + payment in same transaction
+            const saved = await this.orderRepository.create(order, tx);
+
+            return saved;
+        });
+
+        // Step 6: Send notification (fire-and-forget, outside transaction)
         this.notifyUser(savedOrder).catch(err => {
             this.logger.error('Failed to send order notifications', err);
         });

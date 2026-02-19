@@ -16,5 +16,5 @@ export function registerCart(): void {
     container.registerSingleton<GetCartUseCase>(GetCartUseCase);
 
     // Controllers - Singletons
-    container.registerSingleton<CartController>(CartController);
+    container.register<CartController>(CartController, { useClass: CartController });
 }
