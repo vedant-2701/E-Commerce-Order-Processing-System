@@ -4,6 +4,7 @@ import type { IInventoryRepository } from "../../interfaces/repositories/IInvent
 import { ProductResponseDTO } from "../../dto/ProductDTO.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
+import { ProductMapper } from "../../mappers/ProductMapper.js";
 
 @singleton()
 export class GetProductsUseCase {
@@ -28,6 +29,10 @@ export class GetProductsUseCase {
 
         const products = await this.productRepository.findAll(filters);
 
+        /* N + 1 Queries - bcz we need to fetch inventory for each product to get available stock.
+         * To optimize, we can fetch inventory in bulk for all product IDs and map them.
+         * This reduces the number of queries from N+1 to 2.
+         *
         const productsWithStock = await Promise.all(
             products.map(async (product) => {
                 const availableStock =
@@ -41,15 +46,23 @@ export class GetProductsUseCase {
                     description: product.description,
                     price: product.price,
                     categoryId: product.categoryId,
-                    imageUrl: product.imageUrl ?? "",
+                    imageUrl: product.imageUrl ?? undefined,
                     sku: product.sku,
                     isActive: product.isActive,
                     availableStock,
                     createdAt: product.createdAt,
                 };
             }),
+        );*/
+
+        const productIds = products.map((p) => p.id);
+        const stockMap = await this.inventoryRepository.getAvailableStockBulk(
+            productIds,
         );
 
-        return productsWithStock;
+
+        return products.map((product) =>
+            ProductMapper.toResponseDTO(product, stockMap.get(product.id) ?? 0),
+        );
     }
 }

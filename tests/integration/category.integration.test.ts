@@ -42,7 +42,7 @@ beforeAll(() => {
 
 //  Category integration tests 
 
-describe("Category API – integration", () => {
+describe("Category API - integration", () => {
     //  GET /api/categories 
 
     describe("GET /api/categories", () => {

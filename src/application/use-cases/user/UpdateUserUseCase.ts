@@ -4,6 +4,7 @@ import type { IUserRepository } from '../../interfaces/repositories/IUserReposit
 import { UpdateUserDTO, UserResponseDTO } from '../../dto/UserDTO.js';
 import { NotFoundError } from '@shared/errors/NotFoundError.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
+import { UserMapper } from '@application/mappers/UserMapper.js';
 
 @singleton()
 export class UpdateUserUseCase {
@@ -34,13 +35,6 @@ export class UpdateUserUseCase {
 
         this.logger.info('User updated successfully', { userId });
 
-        return {
-            id: updatedUser.id,
-            email: updatedUser.email,
-            firstName: updatedUser.firstName,
-            lastName: updatedUser.lastName,
-            phone: updatedUser.phone,
-            createdAt: updatedUser.createdAt,
-        };
+        return UserMapper.toResponseDTO(updatedUser);
     }
 }

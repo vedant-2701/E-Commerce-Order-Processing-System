@@ -3,6 +3,7 @@ import type { IOrderRepository } from "../../interfaces/repositories/IOrderRepos
 import { OrderResponseDTO } from "../../dto/OrderResponseDTO.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
+import { OrderMapper } from "@application/mappers/OrderMapper.js";
 
 @singleton()
 export class GetOrderHistoryUseCase {
@@ -22,18 +23,6 @@ export class GetOrderHistoryUseCase {
 
         const orders = await this.orderRepository.findByUserId(userId, limit);
 
-        return orders.map((order) => ({
-            id: order.id,
-            orderNumber: order.orderNumber,
-            status: order.status,
-            totalAmount: order.totalAmount,
-            createdAt: order.createdAt,
-            items: order.items.map((item) => ({
-                productName: item.productName,
-                quantity: item.quantity,
-                unitPrice: item.unitPrice,
-                subtotal: item.subtotal,
-            })),
-        }));
+        return orders.map(OrderMapper.toResponseDTO);
     }
 }

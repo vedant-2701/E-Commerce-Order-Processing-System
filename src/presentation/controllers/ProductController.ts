@@ -6,48 +6,49 @@ import { GetProductByIdUseCase } from "@application/use-cases/product/GetProduct
 import { CreateProductDTO } from "@application/dto/ProductDTO.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
+import { ResponseHelper } from "@presentation/helpers/ResponseHelper.js";
 
 @singleton()
 export class ProductController {
     constructor(
         @inject(CreateProductUseCase)
         private readonly createProductUseCase: CreateProductUseCase,
-        
+
         @inject(GetProductsUseCase)
         private readonly getProductsUseCase: GetProductsUseCase,
-        
+
         @inject(GetProductByIdUseCase)
         private readonly getProductByIdUseCase: GetProductByIdUseCase,
-        
+
         @inject(DI_TOKENS.Logger)
         private readonly logger: Logger,
     ) {}
 
     getProducts = async (req: Request, res: Response): Promise<void> => {
         const filters = {
-            categoryId: req.query.categoryId as string,
-            isActive: req.query.isActive === "true",
+            ...(req.query.categoryId !== undefined && {
+                categoryId: req.query.categoryId as string,
+            }),
+            ...(req.query.isActive !== undefined && {
+                isActive: req.query.isActive === "true",
+            }),
             limit: parseInt(req.query.limit as string) || 50,
             offset: parseInt(req.query.offset as string) || 0,
         };
 
         const products = await this.getProductsUseCase.execute(filters);
 
-        res.status(200).json({
-            success: true,
-            data: products,
-        });
+        ResponseHelper.success(res, products);
     };
 
     getProductById = async (req: Request, res: Response): Promise<void> => {
         const { productId } = req.params;
 
-        const product = await this.getProductByIdUseCase.execute(productId as string);
+        const product = await this.getProductByIdUseCase.execute(
+            productId as string,
+        );
 
-        res.status(200).json({
-            success: true,
-            data: product,
-        });
+        ResponseHelper.success(res, product);
     };
 
     createProduct = async (req: Request, res: Response): Promise<void> => {
@@ -64,10 +65,6 @@ export class ProductController {
 
         const product = await this.createProductUseCase.execute(dto);
 
-        res.status(201).json({
-            success: true,
-            message: "Product created successfully",
-            data: product,
-        });
+        ResponseHelper.created(res, product, "Product created successfully");
     };
 }

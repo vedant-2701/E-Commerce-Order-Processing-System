@@ -43,10 +43,10 @@ export class CreateProductUseCase {
             description: dto.description,
             price: dto.price,
             categoryId: dto.categoryId,
-            imageUrl: dto.imageUrl ?? "",
+            imageUrl: dto.imageUrl ?? undefined,
             sku: dto.sku,
             isActive: true,
-            metadata: dto.metadata ?? {},
+            metadata: dto.metadata ?? undefined,
             createdAt: new Date(),
             updatedAt: new Date(),
         };

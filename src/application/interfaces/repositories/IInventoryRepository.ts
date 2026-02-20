@@ -11,6 +11,7 @@ export interface IInventoryRepository {
     create(inventory: Inventory): Promise<Inventory>;
     update(inventory: Inventory): Promise<Inventory>;
     getAvailableStock(productId: string): Promise<number>;
+    getAvailableStockBulk(productIds: string[]): Promise<Map<string, number>>;
     checkAvailability(
         items: Array<{ productId: string; quantity: number }>,
     ): Promise<Map<string, boolean>>;

@@ -70,7 +70,7 @@ beforeAll(() => {
 
 // Product integration tests
 
-describe("Product API – integration", () => {
+describe("Product API - integration", () => {
     // GET /api/product
 
     describe("GET /api/products", () => {

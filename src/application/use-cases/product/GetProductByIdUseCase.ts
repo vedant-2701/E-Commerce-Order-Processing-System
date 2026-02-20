@@ -5,6 +5,7 @@ import { ProductResponseDTO } from "../../dto/ProductDTO.js";
 import { NotFoundError } from "@shared/errors/NotFoundError.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
+import { ProductMapper } from "@application/mappers/ProductMapper.js";
 
 @singleton()
 export class GetProductByIdUseCase {
@@ -31,17 +32,6 @@ export class GetProductByIdUseCase {
             product.id,
         );
 
-        return {
-            id: product.id,
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            categoryId: product.categoryId,
-            imageUrl: product.imageUrl ?? "",
-            sku: product.sku,
-            isActive: product.isActive,
-            availableStock,
-            createdAt: product.createdAt,
-        };
+        return ProductMapper.toResponseDTO(product, availableStock);
     }
 }

@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { container } from 'tsyringe';
 import { UserController } from '../controllers/UserController.js';
 import { asyncHandler } from '../middlewares/AsyncHandler.js';
 import { validate } from '../middlewares/ValidationMiddleware.js';
@@ -9,40 +8,34 @@ import {
     updateUserSchema,
     getUserWithOrdersSchema,
 } from '../validators/userValidator.js';
+import { resolveController } from '@presentation/helpers/ControllerResolver.js';
 
 const router = Router();
 
-let userController: UserController;
-
-const getController = () => {
-    if (!userController) {
-        userController = container.resolve(UserController);
-    }
-    return userController;
-}
+const userController = resolveController(UserController);
 
 router.post(
     '/',
     validate(createUserSchema),
-    asyncHandler((req, res) => getController().createUser(req, res)),
+    asyncHandler((req, res) => userController().createUser(req, res)),
 );
 
 router.get(
     '/:userId',
     validate(getUserByIdSchema),
-    asyncHandler((req, res) => getController().getUserById(req, res))
+    asyncHandler((req, res) => userController().getUserById(req, res))
 );
 
 router.get(
     '/:userId/orders',
     validate(getUserWithOrdersSchema),
-    asyncHandler((req, res) => getController().getUserWithOrders(req, res))
+    asyncHandler((req, res) => userController().getUserWithOrders(req, res))
 );
 
 router.patch(
     '/:userId',
     validate(updateUserSchema),
-    asyncHandler((req, res) => getController().updateUser(req, res))
+    asyncHandler((req, res) => userController().updateUser(req, res))
 );
 
 export { router as userRoutes };

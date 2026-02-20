@@ -6,6 +6,8 @@ import { UserResponseDTO } from '../../dto/UserDTO.js';
 import { OrderResponseDTO } from '../../dto/OrderResponseDTO.js';
 import { NotFoundError } from '@shared/errors/NotFoundError.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
+import { UserMapper } from '@application/mappers/UserMapper.js';
+import { OrderMapper } from '@application/mappers/OrderMapper.js';
 
 export interface UserWithOrdersDTO {
     user: UserResponseDTO;
@@ -42,27 +44,8 @@ export class GetUserWithOrdersUseCase {
         const totalSpent = orders.reduce((sum, order) => sum + order.totalAmount, 0);
 
         return {
-            user: {
-                id: user.id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                phone: user.phone,
-                createdAt: user.createdAt,
-            },
-            orders: orders.map(order => ({
-                id: order.id,
-                orderNumber: order.orderNumber,
-                status: order.status,
-                totalAmount: order.totalAmount,
-                createdAt: order.createdAt,
-                items: order.items.map(item => ({
-                    productName: item.productName,
-                    quantity: item.quantity,
-                    unitPrice: item.unitPrice,
-                    subtotal: item.subtotal,
-                })),
-            })),
+            user: UserMapper.toResponseDTO(user),
+            orders: orders.map(OrderMapper.toResponseDTO),
             totalOrders: orders.length,
             totalSpent,
         };

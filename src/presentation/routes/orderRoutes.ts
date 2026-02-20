@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { container } from "tsyringe";
 import { OrderController } from "../controllers/OrderController.js";
 import { asyncHandler } from "../middlewares/AsyncHandler.js";
 import { validate } from "@presentation/middlewares/ValidationMiddleware.js";
@@ -8,30 +7,26 @@ import {
     getOrderHistorySchema,
     placeOrderSchema,
 } from "@presentation/validators/orderValidator.js";
+import { resolveController } from "@presentation/helpers/ControllerResolver.js";
 
-export const orderRoutes = Router();
+const router = Router();
 
-let orderController: OrderController;
+const orderController = resolveController(OrderController);
 
-const getController = () => {
-    if (!orderController) {
-        orderController = container.resolve(OrderController);
-    }
-    return orderController;
-};
-
-orderRoutes.post(
+router.post(
     "/",
     validate(placeOrderSchema),
-    asyncHandler((req, res) => getController().placeOrder(req, res)),
+    asyncHandler((req, res) => orderController().placeOrder(req, res)),
 );
-orderRoutes.get(
+router.get(
     "/history/:userId",
     validate(getOrderHistorySchema),
-    asyncHandler((req, res) => getController().getOrderHistory(req, res)),
+    asyncHandler((req, res) => orderController().getOrderHistory(req, res)),
 );
-orderRoutes.get(
+router.get(
     "/:orderId",
     validate(getOrderByIdSchema),
-    asyncHandler((req, res) => getController().getOrderById(req, res)),
+    asyncHandler((req, res) => orderController().getOrderById(req, res)),
 );
+
+export { router as orderRoutes };

@@ -14,12 +14,16 @@ import { NotificationService } from '@infrastructure/notifications/NotificationS
 import { PaymentFailedException } from '@domain/exceptions/PaymentFailedException.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
 import { DatabaseConnection } from '@infrastructure/database/DatabaseConnection.js';
+import type { IUserRepository } from '@application/interfaces/repositories/IUserRepository.js';
 
 @singleton()
 export class PlaceOrderUseCase {
     constructor(
         @inject(DI_TOKENS.IOrderRepository)
         private readonly orderRepository: IOrderRepository,
+
+        @inject(DI_TOKENS.IUserRepository)
+        private readonly userRepository: IUserRepository,
 
         @inject(OrderValidationService)
         private readonly orderValidationService: OrderValidationService,
@@ -49,16 +53,16 @@ export class PlaceOrderUseCase {
     async execute(dto: PlaceOrderDTO): Promise<Order> {
         this.logger.info('Starting order placement', { userId: dto.userId });
 
-        // Step 1: Validate products + stock (READ-only, outside transaction)
+        // Validate products + stock (READ-only, outside transaction)
         const orderItems = await this.orderValidationService.validateAndBuildOrderItems(dto.items);
 
-        // Step 2: Calculate pricing (pure computation, no DB)
+        // Calculate pricing (pure computation, no DB)
         const totals = this.orderPricingService.calculateTotals(orderItems);
 
-        // Step 3: Create order entity (in-memory)
+        // Create order entity (in-memory)
         const order = this.orderFactory.createOrder(dto, orderItems, totals);
 
-        // Step 4: Process payment (external API call, outside transaction)
+        // Process payment (external API call, outside transaction)
         const payment = await this.paymentService.processPayment(order, dto);
         order.payment = payment;
 
@@ -71,7 +75,7 @@ export class PlaceOrderUseCase {
 
         order.status = OrderStatus.CONFIRMED;
 
-        // Step 5: CRITICAL SECTION — atomic inventory deduction + order persist
+        // CRITICAL SECTION — atomic inventory deduction + order persist
         // Both operations share one transaction: if either fails, both roll back
         const savedOrder = await this.dbConnection.transaction(async (tx) => {
             // Atomic decrement: UPDATE ... WHERE quantity >= N
@@ -84,7 +88,7 @@ export class PlaceOrderUseCase {
             return saved;
         });
 
-        // Step 6: Send notification (fire-and-forget, outside transaction)
+        // Send notification (fire-and-forget, outside transaction)
         this.notifyUser(savedOrder).catch(err => {
             this.logger.error('Failed to send order notifications', err);
         });
@@ -98,7 +102,13 @@ export class PlaceOrderUseCase {
     }
 
     private async notifyUser(order: Order): Promise<void> {
-        const userEmail = `user-${order.userId}@example.com`;
+        const user = await this.userRepository.findById(order.userId);
+        if (!user) {
+            this.logger.warn('User not found for order notification', { userId: order.userId });
+            return;
+        }
+        
+        const userEmail = user.email;
         const subject = `Order Confirmation - ${order.orderNumber}`;
         const message = `Your order ${order.orderNumber} has been confirmed. Total: $${(
             order.totalAmount / 100

@@ -6,6 +6,7 @@ import { GetCategoryByIdUseCase } from "@application/use-cases/category/GetCateg
 import { CreateCategoryDTO } from "@application/dto/CategoryDTO.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
+import { ResponseHelper } from "@presentation/helpers/ResponseHelper.js";
 
 @singleton()
 export class CategoryController {
@@ -26,10 +27,7 @@ export class CategoryController {
     getCategories = async (req: Request, res: Response): Promise<void> => {
         const categories = await this.getCategoriesUseCase.execute();
 
-        res.status(200).json({
-            success: true,
-            data: categories,
-        });
+        ResponseHelper.success(res, categories);
     };
 
     getCategoryById = async (req: Request, res: Response): Promise<void> => {
@@ -37,10 +35,7 @@ export class CategoryController {
 
         const category = await this.getCategoryByIdUseCase.execute(categoryId as string);
 
-        res.status(200).json({
-            success: true,
-            data: category,
-        });
+        ResponseHelper.success(res, category);
     };
 
     createCategory = async (req: Request, res: Response): Promise<void> => {
@@ -51,10 +46,6 @@ export class CategoryController {
 
         const category = await this.createCategoryUseCase.execute(dto);
 
-        res.status(201).json({
-            success: true,
-            message: "Category created successfully",
-            data: category,
-        });
+        ResponseHelper.created(res, category, "Category created successfully");
     };
 }

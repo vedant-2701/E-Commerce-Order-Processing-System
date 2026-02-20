@@ -7,6 +7,7 @@ import type { IUserRepository } from '../../interfaces/repositories/IUserReposit
 import { User } from '@domain/entities/User.js';
 import { ValidationError } from '@shared/errors/ValidationError.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
+import { UserMapper } from '@application/mappers/UserMapper.js';
 
 @singleton()
 export class CreateUserUseCase {
@@ -51,17 +52,6 @@ export class CreateUserUseCase {
             email: created.email,
         });
 
-        return this.toResponseDTO(created);
-    }
-
-    private toResponseDTO(user: User): UserResponseDTO {
-        return {
-            id: user.id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phone: user.phone,
-            createdAt: user.createdAt,
-        };
+        return UserMapper.toResponseDTO(created);
     }
 }

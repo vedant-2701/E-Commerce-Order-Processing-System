@@ -28,7 +28,7 @@ export class CreateCategoryUseCase {
         const category: Category = {
             id: uuidv4(),
             name: dto.name,
-            description: dto.description ?? "No Description",
+            description: dto.description ?? undefined,
             createdAt: new Date(),
             updatedAt: new Date(),
         };

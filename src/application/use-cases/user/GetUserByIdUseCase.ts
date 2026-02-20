@@ -5,6 +5,7 @@ import { UserResponseDTO } from '../../dto/UserDTO.js';
 import { NotFoundError } from '@shared/errors/NotFoundError.js';
 import { Logger } from '@infrastructure/logging/Logger.js';
 import { User } from '@domain/entities/User.js';
+import { UserMapper } from '@application/mappers/UserMapper.js';
 
 @singleton()
 export class GetUserByIdUseCase {
@@ -24,17 +25,6 @@ export class GetUserByIdUseCase {
             throw new NotFoundError('User', userId);
         }
 
-        return this.toResponseDTO(user);
-    }
-
-    private toResponseDTO(user: User): UserResponseDTO {
-        return {
-            id: user.id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phone: user.phone,
-            createdAt: user.createdAt,
-        };
+        return UserMapper.toResponseDTO(user);
     }
 }

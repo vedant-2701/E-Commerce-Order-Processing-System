@@ -1,37 +1,30 @@
 import { Router } from "express";
-import { container } from "tsyringe";
 import { ProductController } from "../controllers/ProductController.js";
 import { asyncHandler } from "../middlewares/AsyncHandler.js";
 import { createProductSchema, getProductByIdSchema, getProductsSchema } from "@presentation/validators/productValidator.js";
 import { validate } from "@presentation/middlewares/ValidationMiddleware.js";
+import { resolveController } from "@presentation/helpers/ControllerResolver.js";
 
 const router = Router();
 
-let productController: ProductController;
-
-const getController = () => {
-    if (!productController) {
-        productController = container.resolve(ProductController);
-    }
-    return productController;
-};
+const productController = resolveController(ProductController);
 
 router.get(
     "/",
     validate(getProductsSchema),
-    asyncHandler((req, res) => getController().getProducts(req, res)),
+    asyncHandler((req, res) => productController().getProducts(req, res)),
 );
 
 router.get(
     "/:productId",
     validate(getProductByIdSchema),
-    asyncHandler((req, res) => getController().getProductById(req, res)),
+    asyncHandler((req, res) => productController().getProductById(req, res)),
 );
 
 router.post(
     "/",
     validate(createProductSchema),
-    asyncHandler((req, res) => getController().createProduct(req, res)),
+    asyncHandler((req, res) => productController().createProduct(req, res)),
 );
 
 export { router as productRoutes };

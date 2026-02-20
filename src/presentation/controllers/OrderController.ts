@@ -6,6 +6,7 @@ import { GetOrderByIdUseCase } from "@application/use-cases/order/GetOrderByIdUs
 import { PlaceOrderDTO } from "@application/dto/PlaceOrderDTO.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
+import { ResponseHelper } from "@presentation/helpers/ResponseHelper.js";
 
 @singleton()
 export class OrderController {
@@ -35,11 +36,7 @@ export class OrderController {
 
         const order = await this.placeOrderUseCase.execute(dto);
 
-        res.status(201).json({
-            success: true,
-            message: "Order placed successfully",
-            data: order,
-        });
+        ResponseHelper.created(res, order, "Order placed successfully");
     };
 
     getOrderHistory = async (req: Request, res: Response): Promise<void> => {
@@ -48,10 +45,7 @@ export class OrderController {
 
         const orders = await this.getOrderHistoryUseCase.execute(userId as string, limit);
 
-        res.status(200).json({
-            success: true,
-            data: orders,
-        });
+        ResponseHelper.success(res, orders);
     };
 
     getOrderById = async (req: Request, res: Response): Promise<void> => {
@@ -59,9 +53,6 @@ export class OrderController {
 
         const order = await this.getOrderByIdUseCase.execute(orderId as string);
 
-        res.status(200).json({
-            success: true,
-            data: order,
-        });
+        ResponseHelper.success(res, order);
     };
 }

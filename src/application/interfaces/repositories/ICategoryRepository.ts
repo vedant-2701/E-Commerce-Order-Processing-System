@@ -8,4 +8,5 @@ export interface ICategoryRepository {
     update(category: Category): Promise<Category>;
     delete(id: string): Promise<void>;
     getProductCount(categoryId: string): Promise<number>;
+    getProductCounts(categoryIds: string[]): Promise<Map<string, number>>;
 }

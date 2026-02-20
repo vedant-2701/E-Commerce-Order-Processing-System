@@ -20,7 +20,7 @@ export class CategoryRepository implements ICategoryRepository {
             data: {
                 id: category.id,
                 name: category.name,
-                description: category.description ?? "No Description",
+                description: category.description ?? undefined,
             },
         });
 
@@ -61,7 +61,7 @@ export class CategoryRepository implements ICategoryRepository {
             where: { id: category.id },
             data: {
                 name: category.name,
-                description: category.description ?? "No Description",
+                description: category.description ?? undefined,
             },
         });
 
@@ -80,11 +80,27 @@ export class CategoryRepository implements ICategoryRepository {
         });
     }
 
+    async getProductCounts(
+        categoryIds: string[],
+    ): Promise<Map<string, number>> {
+        const counts = await this.prisma.product.groupBy({
+            by: ["categoryId"],
+            where: { categoryId: { in: categoryIds } },
+            _count: { id: true },
+        });
+
+        const countMap = new Map<string, number>();
+        for (const row of counts) {
+            countMap.set(row.categoryId, row._count.id);
+        }
+        return countMap;
+    }
+
     private toDomain(prismaCategory: any): Category {
         return {
             id: prismaCategory.id,
             name: prismaCategory.name,
-            description: prismaCategory.description ?? "No Description",
+            description: prismaCategory.description ?? undefined,
             createdAt: prismaCategory.createdAt,
             updatedAt: prismaCategory.updatedAt,
         };

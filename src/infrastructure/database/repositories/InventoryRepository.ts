@@ -66,6 +66,21 @@ export class InventoryRepository implements IInventoryRepository {
         return inventory.quantity;
     }
 
+    async getAvailableStockBulk(
+        productIds: string[],
+    ): Promise<Map<string, number>> {
+        const inventories = await this.prisma.inventory.findMany({
+            where: { productId: { in: productIds } },
+            select: { productId: true, quantity: true },
+        });
+
+        const stockMap = new Map<string, number>();
+        for (const inventory of inventories) {
+            stockMap.set(inventory.productId, inventory.quantity);
+        }
+        return stockMap;
+    }
+
     async checkAvailability(
         items: Array<{ productId: string; quantity: number }>,
     ): Promise<Map<string, boolean>> {

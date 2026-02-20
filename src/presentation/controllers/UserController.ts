@@ -7,6 +7,7 @@ import { UpdateUserDTO } from "@application/dto/UserDTO.js";
 import { DI_TOKENS } from "@config/di-tokens.js";
 import { Logger } from "@infrastructure/logging/Logger.js";
 import { CreateUserUseCase } from "@application/use-cases/user/CreateUserUseCase.js";
+import { ResponseHelper } from "@presentation/helpers/ResponseHelper.js";
 
 @singleton()
 export class UserController {
@@ -32,22 +33,15 @@ export class UserController {
 
         const user = await this.createUserUseCase.execute(dto);
 
-        res.status(201).json({
-            success: true,
-            message: "User created successfully",
-            data: user,
-        });
+        ResponseHelper.created(res, user, "User created successfully");
     };
 
     getUserById = async (req: Request, res: Response): Promise<void> => {
         const { userId } = req.params as { userId: string };
 
         const user = await this.getUserByIdUseCase.execute(userId);
-
-        res.status(200).json({
-            success: true,
-            data: user,
-        });
+        
+        ResponseHelper.success(res, user);
     };
 
     getUserWithOrders = async (req: Request, res: Response): Promise<void> => {
@@ -55,10 +49,7 @@ export class UserController {
 
         const result = await this.getUserWithOrdersUseCase.execute(userId);
 
-        res.status(200).json({
-            success: true,
-            data: result,
-        });
+        ResponseHelper.success(res, result);
     };
 
     updateUser = async (req: Request, res: Response): Promise<void> => {
@@ -72,10 +63,6 @@ export class UserController {
 
         const user = await this.updateUserUseCase.execute(userId, dto);
 
-        res.status(200).json({
-            success: true,
-            message: "User updated successfully",
-            data: user,
-        });
+        ResponseHelper.success(res, user, "User updated successfully");
     };
 }
